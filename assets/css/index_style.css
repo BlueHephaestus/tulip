@@ -1,0 +1,117 @@
+
+/*Button Styles*/
+.btn-option {
+  display: inline-block;
+  padding: 6px 12px;
+  margin: 10px;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.42857143;
+  text-align: center;
+  white-space: normal;
+  vertical-align: middle;
+  cursor: pointer;
+  -webkit-user-select: none;
+  background-image: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  box-shadow: none;
+  color: #333;
+  background-color: #fff;
+  border-color: #ccc;
+  height: 100px;
+  width: 150px;
+  transition: all .1s ease-in;
+}
+
+.btn-continue {
+  display: inline-block;
+  padding: 6px 12px;
+  margin: 30px 10px 0px 10px;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.42857143;
+  text-align: center;
+  white-space: normal;
+  vertical-align: middle;
+  cursor: pointer;
+  -webkit-user-select: none;
+  background-image: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  box-shadow: none;
+  color: #fff;
+  background-color: #0275d8;
+  border-color: #ccc;
+  height: 55px;
+  width: 180px;
+  transition: all .1s ease-in;
+  text-transform: uppercase;
+}
+
+.btn-option:hover,
+.btn-clicked:hover{
+  box-shadow: 0 0 4px 1px #1a82f7;
+}
+
+.btn-clicked{
+  color: #fff;
+  background-color: #0275d8!important;
+  border-color: #0275d8;
+}
+
+/*End Button Styles*/
+
+
+/*Replacement / Overwritten Styles*/
+.col-md-6 {
+  padding: 5px;
+}
+
+/*End Replacement / Overwritten Styles*/
+
+
+/*Input Styles*/
+/*End Input Styles*/
+
+
+/*Text Styles*/
+.page-header-subtitle {
+  display: block;
+  font-family: 'Raleway',serif;
+  font-size: 25px;
+  font-weight: Normal;
+  text-align: center;
+  padding-bottom: 18px;
+}
+
+#current-location-text {
+  display: block;
+  font-family: 'Raleway',serif;
+  font-size: 13px;
+  font-weight: Normal;
+  text-align: center;
+  padding-bottom: 18px;
+}
+
+/*End Text Styles*/
+
+/*Container Styles*/
+/*End Container Styles*/
+
+/*Misc ID Styles*/
+
+#wrapper{
+  position: relative;
+  height: 80vh;
+}
+
+#wrapper > div, span{
+  position: relative;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%,0%);
+}
+/*End Misc ID Styles*/

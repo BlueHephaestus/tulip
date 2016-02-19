@@ -1,0 +1,26 @@
+
+State
+  City
+Type
+  Furnished
+    Priority Text = Beds
+  Unfurnished
+    Priority Text = Beds & Baths
+Beds
+Unfurnished
+  Baths
+Furnished
+  Travel Frequency
+Dates
+Furnished
+  Nights Visiting
+Unfurnished
+  Pets
+Other Cities
+Home Types
+Parking Needs
+Comments
+Contact Info
+Min price
+Max price(budget)
+

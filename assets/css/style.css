@@ -1,0 +1,202 @@
+
+/*Button Styles*/
+.btn-other,
+.btn-all,
+.btn-option {
+  display: inline-block;
+  padding: 6px 12px;
+  margin: 10px;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.42857143;
+  text-align: center;
+  white-space: normal;
+  vertical-align: middle;
+  cursor: pointer;
+  -webkit-user-select: none;
+  background-image: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  box-shadow: none;
+  color: #333;
+  background-color: #fff;
+  border-color: #ccc;
+  min-height: 60px;
+  max-height: 100px;
+  min-width: 110px;
+  max-width: 150px;
+  transition: all .1s ease-in;
+}
+
+.btn-continue {
+  display: inline-block;
+  padding: 6px 12px;
+  margin: 15px 10px 10px 10px;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.42857143;
+  text-align: center;
+  white-space: normal;
+  vertical-align: middle;
+  cursor: pointer;
+  -webkit-user-select: none;
+  background-image: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  box-shadow: none;
+  color: #fff;
+  background-color: #0275d8;
+  border-color: #ccc;
+  height: 55px;
+  width: 180px;
+  transition: all .1s ease-in;
+  text-transform: uppercase;
+}
+
+.btn-option:hover,
+.btn-other:hover,
+.btn-all:hover,
+.btn-continue:hover,
+.btn-clicked:hover{
+  box-shadow: 0 0 4px 1px #1a82f7;
+}
+
+.btn-clicked{
+  color: #fff;
+  background-color: #0275d8!important;
+  border-color: #0275d8;
+}
+
+/*End Button Styles*/
+
+
+/*Replacement / Overwritten Styles*/
+.col-md-6 {
+  padding: 5px;
+}
+
+.input-group-addon{/*keep it from getting overridden by the wrapper>span style*/
+  transform: translate(0%, 0%);
+  position: initial;
+}
+
+/*End Replacement / Overwritten Styles*/
+
+
+/*Input Styles*/
+input {
+  border-radius: 0px!important;
+  padding: 10px!important;
+  transition: border 0.3s!important;
+  height: 42px!important;
+}
+
+.other-textarea {
+  display: none;
+}
+/*End Input Styles*/
+
+
+/*Text Styles*/
+.page-header-subtitle {
+  display: block;
+  font-family: 'Raleway',serif;
+  font-size: 25px;
+  font-weight: Normal;
+  text-align: center;
+  padding-bottom: 18px;
+}
+
+#current-location-text {
+  display: block;
+  font-family: 'Raleway',serif;
+  font-size: 13px;
+  font-weight: Normal;
+  text-align: center;
+  padding-bottom: 18px;
+}
+
+.input-title {
+  position: static;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 14px;
+}
+
+.form-required{
+  font-family: sans-serif;
+  display:inline;
+  color:red;
+  padding-left:3px;/*better replacement to extra space*/
+}
+
+/*End Text Styles*/
+
+/*Container Styles*/
+.body{
+  /*background-color: */
+}
+
+#beds-other-form,
+#baths-other-form,
+#travel-frequency-other-form{
+  height: 0;
+}
+
+.question-container{
+  display: none;
+  margin-top: 150px;
+  padding-top: 25vh;/* So that when jumping it has that nice offset*/
+}
+form > div[class="row"]{
+  width: 50%;
+}
+
+textarea{
+  background: rgba(0, 0, 0, 0.05);
+}
+
+/*End Container Styles*/
+
+/*Misc ID Styles*/
+#cities-container{
+  display: block;
+  /*margin-top:30px;*/
+}
+
+#beds-btn-submit,
+#baths-btn-submit,
+#travel-frequency-btn-submit,
+#city-btn-continue,
+#contact-info-btn-submit,
+#dates-btn-submit,
+#btn-submit{
+  display: none;/*so we can fade it in*/
+}
+
+#contact-info-btn-continue{
+  /*display: none;*/
+}
+
+#nights-visiting-btn-continue{
+  display: none;
+}
+
+#whitespace{
+  padding-top: 500px;
+  margin-top: 500px;
+}
+
+#wrapper{
+  position: relative;
+  height: 80vh;
+}
+
+#wrapper > div, span{
+  position: relative;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%,0%);
+}
+/*End Misc ID Styles*/

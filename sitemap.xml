@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+        <loc>/var/www/html/new_site_design/index.php</loc>
+        <lastmod>2016-02-13T01:25:11+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>1</priority>
+    </url>
+    <url>
+        <loc>/var/www/html/new_site_design/form.php</loc>
+        <lastmod>2016-02-14T23:28:21+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>1</priority>
+    </url>
+    <url>
+        <loc>/var/www/html/new_site_design/form_error.php</loc>
+        <lastmod>2016-02-13T00:36:29+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>1</priority>
+    </url>
+</urlset>
