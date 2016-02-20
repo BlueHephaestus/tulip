@@ -144,6 +144,18 @@ input {
   height: 0;
 }
 
+.error-active{
+  background-color: #ff5151;
+  background-size: 50% 100%;
+  /*
+   * OI
+   * We were trying to get the highlightError function working by first figuring out the right style for the containers, and making the border not be too wide.
+  */
+  border-radius: 10px;
+  border: 3px solid;
+  border-color: #991111;
+}
+
 .question-container{
   display: none;
   margin-top: 150px;

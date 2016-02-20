@@ -25,12 +25,14 @@
     $location_set = true;
     $state = $_GET["state"];
     $city = $_GET["city"];
-  }elseif(isset($_GET["type"])){
+  }
+  if(isset($_GET["type"])){
     $type_set = true;
     $type = $_GET["type"];
-  }elseif(isset($_GET["error"])){
+  }
+  if(isset($_GET["error"])){
     $error_set = true;
-    $error_id = $_GET["error"];
+    $error = $_GET["error"];
   }
 ?>
 
@@ -57,6 +59,9 @@
       var phone = "";
       var email = "";
       var budget = "";
+
+      function put(path, params){
+      }
 
       function post(path, params) {
         method = "post"; // Set method to post by default if not specified.
@@ -94,7 +99,7 @@
         return !isNaN(parseFloat(n)) && isFinite(n);
       }
 
-      function getLocations () {
+      function getLocations() {
         var oReq = new XMLHttpRequest(); //New request object
         oReq.onload = function() {
           locations = JSON.parse(this.responseText);
@@ -104,6 +109,94 @@
         oReq.send();
       }
       
+      function revealAll(state, city, type){
+
+        //Press the corresponding buttons
+        stateBtns = document.getElementById("states-container").getElementsByClassName("btn-option")
+        for (var stateBtn = 0; stateBtn < stateBtns.length; stateBtn++){
+          if (stateBtns[stateBtn].innerText.indexOf(state) > -1){
+            stateBtns[stateBtn].click();
+            break;
+          }
+        }
+
+        cityBtns = document.getElementById("cities-container").getElementsByClassName("btn-option")
+        for (var cityBtn = 0; cityBtn < cityBtns.length; cityBtn++){
+          if (cityBtns[cityBtn].innerText.indexOf(city) > -1){
+            cityBtns[cityBtn].click();
+            break;
+          }
+        }
+
+        typeBtns = document.getElementById("types-container").getElementsByClassName("btn-option")
+        for (var typeBtn = 0; typeBtn < typeBtns.length; typeBtn++){
+          if (typeBtns[typeBtn].innerText.indexOf(type) > -1){
+            typeBtns[typeBtn].click();
+            break;
+          }
+        }
+
+        //Show all buttons under the correct decision tree
+        $("#priority-container").fadeIn(0);
+        if (type == "Furnished"){
+          document.getElementById('priority-container').getElementsByClassName('btn-option')[1].innerText = "Beds";
+        }else{
+          document.getElementById('priority-container').getElementsByClassName('btn-option')[1].innerText = "Beds & Baths";
+        }
+
+        $("#beds-container").fadeIn(0);
+        if (type == "Unfurnished"){
+          $("#baths-container").fadeIn(0);
+        }else{
+          document.getElementById("travel-frequency-container").getElementsByClassName('page-header-subtitle')[0].innerHTML = "How often will you be coming to " + city + "?" + "<p class='form-required'> *</p>";
+          $("#travel-frequency-container").fadeIn(0);
+        }
+        $("#dates-container").fadeIn(0);
+        document.getElementById('dates-container').getElementsByClassName('form-control')[0].title = "When will you start travelling to " + city + "? This could be the date that your vacation or contract starts.";
+        document.getElementById('dates-container').getElementsByClassName('form-control')[1].title = "When will you stop travelling to " + city + "? This could be your vacation or contract end date.";
+
+        if (type == "Furnished"){
+          document.getElementById('dates-container').getElementsByClassName('form-control')[0].placeholder = "Travel Start Date";
+          document.getElementById('dates-container').getElementsByClassName('form-control')[1].placeholder = "Travel End Date";
+        }else{
+          document.getElementById('dates-container').getElementsByClassName('form-control')[0].placeholder = "Lease Start Date";
+          document.getElementById('dates-container').getElementsByClassName('form-control')[1].placeholder = "Lease End Date";
+        }
+        if (type == "Furnished"){
+          document.getElementById("nights-visiting-container").getElementsByClassName("page-header-subtitle")[0].innerHTML = "What nights will you be in " + city + "?" + "<p class='form-required'>*</p>";
+          $("#nights-visiting-container").fadeIn(0);
+        }else{
+          $("#pets-container").fadeIn(0);
+        }
+        $("#other-cities-container").fadeIn(0);
+        otherCitiesContainerHTML = "";
+        otherCitiesContainerHTML += "<span class='page-header-subtitle'>Other cities you would consider living in?</span>";
+        for (cityIndex in locations[state]){
+          if (locations[state][cityIndex] != city){//don't display the already selected city in the list of options
+            cityButton = "<button type='button' align='center' class='btn-option'>" + locations[state][cityIndex] + "</button>";
+            otherCitiesContainerHTML += cityButton;
+          }
+        }
+        allButton = "<button type='button' align='center' class='btn-option'>All</button>";
+        otherCitiesContainerHTML += allButton;
+        continueButton = "<br><button type='button' align='center' class='btn-continue'>Continue</button>";
+        otherCitiesContainerHTML += continueButton;
+        document.getElementById('other-cities-container').innerHTML = otherCitiesContainerHTML;
+        $("#home-types-container").fadeIn(0);
+        $("#parking-needs-container").fadeIn(0);
+        $("#comments-container").fadeIn(0);
+        $("#contact-info-container").fadeIn(0);
+        $("#budget-container").fadeIn(0);
+      }
+
+      function highlightError(error){
+        
+
+      }
+      
+      function displayErrorOverlay(error){
+
+      }
       /*function locationSet(){
         var oReq = new XMLHttpRequest(); //New request object
         oReq.onload = function() {
@@ -229,7 +322,6 @@
 
       function getNightsVisitingContainer(){
         if (type == "Furnished"){
-          //$('html, body').animate({ scrollTop: 1875}, 500);
           document.getElementById("nights-visiting-container").getElementsByClassName("page-header-subtitle")[0].innerHTML = "What nights will you be in " + city + "?" + "<p class='form-required'>*</p>";
           $("#nights-visiting-container").fadeIn(0.4);
           jumpTo('nights-visiting-container');
@@ -293,8 +385,14 @@
         }
       }
       function errorCheck(){
-        if (errorSet){
-        
+        if (locationSet && typeSet && errorSet){
+          state = "<?php echo $state;?>";
+          city = "<?php echo $city;?>";
+          type = "<?php echo $type;?>";
+          error = "<?php echo $error;?>";
+          revealAll(state, city, type);
+          highlightError(error);
+          displayErrorOverlay(error);
         }
       }
   </script>
@@ -306,6 +404,7 @@
       typeSet = '<?php echo $type_set;?>';
       errorSet = '<?php echo $error_set;?>';
 
+      errorCheck();
       var currentLocationText = "<i class='fa fa-map-marker'></i> Current Location: ";
       geocoder = new google.maps.Geocoder();
 
@@ -1001,10 +1100,12 @@
       
       <!--Priority-->
       <div class="question-container" id="priority-container" title="This will help us find the perfect home for you!">
-        <span class='page-header-subtitle'>What is more important to you?<p class='form-required'>*</p></span>
-        <button type='button' align='center' class='btn-option'>Staying within Budget</button>
-        <button type='button' align='center' class='btn-option'></button>
-        <button type='button' align='center' class='btn-option'>Neither</button>
+        <div class="error-container">
+          <span class='page-header-subtitle'>What is more important to you?<p class='form-required'>*</p></span>
+          <button type='button' align='center' class='btn-option'>Staying within Budget</button>
+          <button type='button' align='center' class='btn-option'></button>
+          <button type='button' align='center' class='btn-option'>Neither</button>  
+        </div>
       </div>
       <!--End Priority-->
       
