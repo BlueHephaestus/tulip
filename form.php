@@ -181,7 +181,8 @@
         otherCitiesContainerHTML += allButton;
         continueButton = "<br><button type='button' align='center' class='btn-continue'>Continue</button>";
         otherCitiesContainerHTML += continueButton;
-        document.getElementById('other-cities-container').innerHTML = otherCitiesContainerHTML;
+        document.getElementById('other-cities-error-container').innerHTML = otherCitiesContainerHTML;
+        $("#location-container").fadeIn(0);
         $("#home-types-container").fadeIn(0);
         $("#parking-needs-container").fadeIn(0);
         $("#comments-container").fadeIn(0);
@@ -189,9 +190,13 @@
         $("#budget-container").fadeIn(0);
       }
 
-      function highlightError(error){
-        
+      function gotoError(error){
 
+        errorContainer = "#" + error + "-error-container";
+        $(errorContainer).addClass("error-active");
+        $(errorContainer).fadeIn(0);
+        //clicks fade them again
+        //make fully visible
       }
       
       function displayErrorOverlay(error){
@@ -254,7 +259,7 @@
           stateButton = "<button type='button' align='center' class='btn-option'>" + stateIndex + "</button>";
           stateContainerHTML += stateButton;
         }
-        document.getElementById('states-container').innerHTML = stateContainerHTML;
+        document.getElementById('states-container').innerHTML = stateContainerHTML;//need to have error-container there at initial load
       }
 
       function getCityButtons(state){
@@ -265,7 +270,7 @@
           cityButton = "<button type='button' align='center' class='btn-option'>" + locations[state][cityIndex] + "</button>";
           cityContainerHTML += cityButton;
         }
-        document.getElementById('cities-container').innerHTML = cityContainerHTML;
+        document.getElementById('cities-container').innerHTML = cityContainerHTML;//need to have error-container there at initial load
       }
 
       function getTypesContainer(){
@@ -347,7 +352,7 @@
         otherCitiesContainerHTML += allButton;
         continueButton = "<br><button type='button' align='center' class='btn-continue'>Continue</button>";
         otherCitiesContainerHTML += continueButton;
-        document.getElementById('other-cities-container').innerHTML = otherCitiesContainerHTML;
+        document.getElementById('other-cities-error-container').innerHTML = otherCitiesContainerHTML;//need to have error-container there at initial load
       }
 
       function getHomeTypesContainer(){
@@ -391,7 +396,7 @@
           type = "<?php echo $type;?>";
           error = "<?php echo $error;?>";
           revealAll(state, city, type);
-          highlightError(error);
+          gotoError(error);
           displayErrorOverlay(error);
         }
       }
@@ -497,21 +502,26 @@
   <script>
     //this doesn't always trigger, but sometimes the above code screws up and this is needed
     window.onload = function(){
-      if (locationSet){
-        state = "<?php echo $state;?>";
-        city = "<?php echo $city;?>";
-        stateBtns = document.getElementById("states-container").getElementsByClassName("btn-option")
-        for (var stateBtn = 0; stateBtn < stateBtns.length; stateBtn++){
-          if (stateBtns[stateBtn].innerText.indexOf(state) > -1){
-            stateBtns[stateBtn].click();
-            break;
-          }
-        }
-        cityBtns = document.getElementById("cities-container").getElementsByClassName("btn-option")
-        for (var cityBtn = 0; cityBtn < cityBtns.length; cityBtn++){
-          if (cityBtns[cityBtn].innerText.indexOf(city) > -1){
-            cityBtns[cityBtn].click();
-            break;
+      if (errorSet){
+        error = "<?php echo $error;?>";
+        if (error != "location"){//needed to add this exception so we could highlight this area if it's got an area, while still mainting full opaque
+          if (locationSet){
+            state = "<?php echo $state;?>";
+            city = "<?php echo $city;?>";
+            stateBtns = document.getElementById("states-container").getElementsByClassName("btn-option")
+            for (var stateBtn = 0; stateBtn < stateBtns.length; stateBtn++){
+              if (stateBtns[stateBtn].innerText.indexOf(state) > -1){
+                stateBtns[stateBtn].click();
+                break;
+              }
+            }
+            cityBtns = document.getElementById("cities-container").getElementsByClassName("btn-option")
+            for (var cityBtn = 0; cityBtn < cityBtns.length; cityBtn++){
+              if (cityBtns[cityBtn].innerText.indexOf(city) > -1){
+                cityBtns[cityBtn].click();
+                break;
+              }
+            }
           }
         }
       }
@@ -1072,35 +1082,39 @@
     
     <div id="wrapper">
       <div id="location-container">
-        <span class="page-header-subtitle">
-          Where are you looking for a home?<p class='form-required'>*</p>
-        </span>
-        <span id="current-location-text">
-          <i class="fa fa-map-marker"></i> Current Location: Not Set
-        </span>
+        <div id="location-error-container">
+          <span class="page-header-subtitle">
+            Where are you looking for a home?<p class='form-required'>*</p>
+          </span>
+          <span id="current-location-text">
+            <i class="fa fa-map-marker"></i> Current Location: Not Set
+          </span>
 
-        <!--States-->
-        <div id="states-container">
-        </div>
-        <!--End States-->
+          <!--States-->
+          <div id="states-container">
+          </div>
+          <!--End States-->
 
-        <!--Cities-->
-        <div id="cities-container">
+          <!--Cities-->
+          <div id="cities-container">
+          </div>
+          <!--End Cities-->
         </div>
-        <!--End Cities-->
       </div>
 
       <!--Types-->
       <div class="question-container" id="types-container">
-        <span class='page-header-subtitle'>What type of home are you looking for?<p class='form-required'>*</p></span>
-        <button type='button' align='center' class='btn-option'>Unfurnished</button>
-        <button type='button' align='center' class='btn-option'>Furnished</button>
+        <div id="types-error-container">
+          <span class='page-header-subtitle'>What type of home are you looking for?<p class='form-required'>*</p></span>
+          <button type='button' align='center' class='btn-option'>Unfurnished</button>
+          <button type='button' align='center' class='btn-option'>Furnished</button>
+        </div>
       </div>
       <!--End Types-->
       
       <!--Priority-->
       <div class="question-container" id="priority-container" title="This will help us find the perfect home for you!">
-        <div class="error-container">
+        <div id="priority-error-container">
           <span class='page-header-subtitle'>What is more important to you?<p class='form-required'>*</p></span>
           <button type='button' align='center' class='btn-option'>Staying within Budget</button>
           <button type='button' align='center' class='btn-option'></button>
@@ -1111,21 +1125,23 @@
       
       <!--Beds-->
       <div class="question-container" id="beds-container">
-        <span class='page-header-subtitle'>How many Bedrooms do you need?<p class='form-required'>*</p></span>
-        <form id="beds-other-form">
-          <textarea class="other-textarea" id="beds-other-textarea" cols="45" rows="7" required></textarea>
-          <br><button type='submit' align='center' id='beds-btn-submit' class='btn-continue'>Continue</button>
-        </form>
-        <div id="beds-buttons">
-          <div class="row">
-            <button type='button' align='center' class='btn-option'>1</button>
-            <button type='button' align='center' class='btn-option'>2</button>
-            <button type='button' align='center' class='btn-option'>3</button>
-          </div>
-          <div class="row">
-            <button type='button' align='center' class='btn-option'>4</button>
-            <button type='button' align='center' class='btn-option'>5</button>
-            <button type='button' align='center' class='btn-other'>Other</button>
+        <div id="beds-error-container">
+          <span class='page-header-subtitle'>How many Bedrooms do you need?<p class='form-required'>*</p></span>
+          <form id="beds-other-form">
+            <textarea class="other-textarea" id="beds-other-textarea" cols="45" rows="7" required></textarea>
+            <br><button type='submit' align='center' id='beds-btn-submit' class='btn-continue'>Continue</button>
+          </form>
+          <div id="beds-buttons">
+            <div class="row">
+              <button type='button' align='center' class='btn-option'>1</button>
+              <button type='button' align='center' class='btn-option'>2</button>
+              <button type='button' align='center' class='btn-option'>3</button>
+            </div>
+            <div class="row">
+              <button type='button' align='center' class='btn-option'>4</button>
+              <button type='button' align='center' class='btn-option'>5</button>
+              <button type='button' align='center' class='btn-other'>Other</button>
+            </div>
           </div>
         </div>
       </div>
@@ -1133,21 +1149,23 @@
 
       <!--Baths-->
       <div class="question-container" id="baths-container">
-        <span class='page-header-subtitle'>How many Bathrooms do you need?<p class='form-required'>*</p></span>
-        <form id="baths-other-form">
-          <textarea class="other-textarea" id="baths-other-textarea" cols="45" rows="7" required></textarea>
-          <br><button type='submit' align='center' id='baths-btn-submit' class='btn-continue'>Continue</button>
-        </form>
-        <div id="baths-buttons">
-          <div class="row">
-            <button type='button' align='center' class='btn-option'>1</button>
-            <button type='button' align='center' class='btn-option'>2</button>
-            <button type='button' align='center' class='btn-option'>3</button>
-          </div>
-          <div class="row">
-            <button type='button' align='center' class='btn-option'>4</button>
-            <button type='button' align='center' class='btn-option'>5</button>
-            <button type='button' align='center' class='btn-other'>Other</button>
+        <div id="baths-error-container">
+          <span class='page-header-subtitle'>How many Bathrooms do you need?<p class='form-required'>*</p></span>
+          <form id="baths-other-form">
+            <textarea class="other-textarea" id="baths-other-textarea" cols="45" rows="7" required></textarea>
+            <br><button type='submit' align='center' id='baths-btn-submit' class='btn-continue'>Continue</button>
+          </form>
+          <div id="baths-buttons">
+            <div class="row">
+              <button type='button' align='center' class='btn-option'>1</button>
+              <button type='button' align='center' class='btn-option'>2</button>
+              <button type='button' align='center' class='btn-option'>3</button>
+            </div>
+            <div class="row">
+              <button type='button' align='center' class='btn-option'>4</button>
+              <button type='button' align='center' class='btn-option'>5</button>
+              <button type='button' align='center' class='btn-other'>Other</button>
+            </div>
           </div>
         </div>
       </div>
@@ -1155,152 +1173,171 @@
 
       <!--Travel Frequency-->
       <div class="question-container" id="travel-frequency-container">
-        <span class='page-header-subtitle'></span>
-        <form id="travel-frequency-other-form">
-          <textarea class="other-textarea" id="travel-frequency-other-textarea" cols="45" rows="7" required></textarea>
-          <br><button type='submit' align='center' id='travel-frequency-btn-submit' class='btn-continue'>Continue</button>
-        </form>
-        <div id="travel-frequency-buttons">
-          <button type='button' align='center' class='btn-option'>Weekly</button>
-          <button type='button' align='center' class='btn-option'>Every Other Week</button>
-          <button type='button' align='center' class='btn-option'>Once a Month</button>
-          <button type='button' align='center' class='btn-option'>Just Once</button>
-          <button type='button' align='center' class='btn-other'>Irregular Travel</button>
+        <div id="travel-frequency-error-container">
+          <span class='page-header-subtitle'></span>
+          <form id="travel-frequency-other-form">
+            <textarea class="other-textarea" id="travel-frequency-other-textarea" cols="45" rows="7" required></textarea>
+            <br><button type='submit' align='center' id='travel-frequency-btn-submit' class='btn-continue'>Continue</button>
+          </form>
+          <div id="travel-frequency-buttons">
+            <button type='button' align='center' class='btn-option'>Weekly</button>
+            <button type='button' align='center' class='btn-option'>Every Other Week</button>
+            <button type='button' align='center' class='btn-option'>Once a Month</button>
+            <button type='button' align='center' class='btn-option'>Just Once</button>
+            <button type='button' align='center' class='btn-other'>Irregular Travel</button>
+          </div>
         </div>
       </div>
       <!--End Travel Frequency-->
 
       <!--Start & End Dates-->
       <div class="question-container form-container" id="dates-container">
-        <span class="page-header-subtitle">When does your contract start and end?<p class="form-required">*</p></span>
-        <form id="dates-form">
-          <div class="row">
-            <!--<div class="col-md-6">
-              <input type='text' align='center' id='start-date-input' class='form-control'>
+        <div id="dates-error-container">
+          <span class="page-header-subtitle">When does your contract start and end?<p class="form-required">*</p></span>
+          <form id="dates-form">
+            <div class="row">
+              <!--<div class="col-md-6">
+                <input type='text' align='center' id='start-date-input' class='form-control'>
+              </div>
+              <div class="col-md-6">
+                <input type='text' align='center' id='end-date-input' class='form-control'>
+              </div>-->
+              <div class="input-daterange input-group" id="datepicker">
+                <input value="Travel Start Date" type="text" id="start-date-input" class="input-sm form-control" name="start" />
+                <span class="input-group-addon">to</span>
+                <input value="Travel End Date" type="text" id="end-date-input" class="input-sm form-control" name="end" />
+              </div>
             </div>
-            <div class="col-md-6">
-              <input type='text' align='center' id='end-date-input' class='form-control'>
-            </div>-->
-            <div class="input-daterange input-group" id="datepicker">
-              <input value="Travel Start Date" type="text" id="start-date-input" class="input-sm form-control" name="start" />
-              <span class="input-group-addon">to</span>
-              <input value="Travel End Date" type="text" id="end-date-input" class="input-sm form-control" name="end" />
-            </div>
-          </div>
-          <br><button type='submit' align='center' id='dates-btn-submit' class='btn-continue'>Continue</button>
-        </form>
+            <br><button type='submit' align='center' id='dates-btn-submit' class='btn-continue'>Continue</button>
+          </form>
+        </div>
       </div>
       <!--End Start & End Dates-->
 
       <!--Nights Visiting-->
       <div class="question-container" id="nights-visiting-container">
-        <span class='page-header-subtitle'></span>
-        <div class="row">
-          <button type='button' align='center' class='btn-option'>Sunday</button>
-          <button type='button' align='center' class='btn-option'>Monday</button>
-          <button type='button' align='center' class='btn-option'>Tuesday</button>
-          <button type='button' align='center' class='btn-option'>Wednesday</button>
+        <div id="nights-visiting-error-container">
+          <span class='page-header-subtitle'></span>
+          <div class="row">
+            <button type='button' align='center' class='btn-option'>Sunday</button>
+            <button type='button' align='center' class='btn-option'>Monday</button>
+            <button type='button' align='center' class='btn-option'>Tuesday</button>
+            <button type='button' align='center' class='btn-option'>Wednesday</button>
+          </div>
+          <div class="row">
+            <button type='button' align='center' class='btn-option'>Thursday</button>
+            <button type='button' align='center' class='btn-option'>Friday</button>
+            <button type='button' align='center' class='btn-option'>Saturday</button>
+            <button type='button' align='center' class='btn-option btn-all'>All</button>
+          </div>
+          <button type='button' align='center' id='nights-visiting-btn-continue' class='btn-continue'>Continue</button>
         </div>
-        <div class="row">
-          <button type='button' align='center' class='btn-option'>Thursday</button>
-          <button type='button' align='center' class='btn-option'>Friday</button>
-          <button type='button' align='center' class='btn-option'>Saturday</button>
-          <button type='button' align='center' class='btn-option btn-all'>All</button>
-        </div>
-        <button type='button' align='center' id='nights-visiting-btn-continue' class='btn-continue'>Continue</button>
       </div>
       <!--End Nights Visiting-->
 
       <!--Pets-->
       <div class="question-container" id="pets-container">
-        <span class='page-header-subtitle'>Pets?</span>
-        <textarea class="other-textarea" id="pets-other-textarea" cols="45" rows="7"></textarea>
-        <div id="pets-buttons">
-          <button type='button' align='center' class='btn-option'>Dog(s)</button>
-          <button type='button' align='center' class='btn-option'>Cat(s)</button>
-          <button type='button' align='center' class='btn-option btn-other'>Other</button>
+        <div id="pets-error-container">
+          <span class='page-header-subtitle'>Pets?</span>
+          <textarea class="other-textarea" id="pets-other-textarea" cols="45" rows="7"></textarea>
+          <div id="pets-buttons">
+            <button type='button' align='center' class='btn-option'>Dog(s)</button>
+            <button type='button' align='center' class='btn-option'>Cat(s)</button>
+            <button type='button' align='center' class='btn-option btn-other'>Other</button>
+          </div>
+          <br><button type='button' align='center' id='pets-btn-continue' class='btn-continue'>Continue</button>
         </div>
-        <br><button type='button' align='center' id='pets-btn-continue' class='btn-continue'>Continue</button>
       </div>
       <!--End Pets-->
 
       <!--Other Cities-->
       <div class="question-container" id="other-cities-container">
+        <div id="other-cities-error-container">
+        </div>
       </div>
       <!--End Other Cities-->
 
       <!--Home Types-->
       <div class="question-container" id="home-types-container">
-        <span class='page-header-subtitle'>Select acceptable home types: </span>
-        <div class="row">
-          <button type='button' align='center' class='btn-option'>Single Family Home</button>
-          <button type='button' align='center' class='btn-option'>Duplex</button>
-          <button type='button' align='center' class='btn-option'>Apartment</button>
+        <div id="home-types-error-container">
+          <span class='page-header-subtitle'>Select acceptable home types: </span>
+          <div class="row">
+            <button type='button' align='center' class='btn-option'>Single Family Home</button>
+            <button type='button' align='center' class='btn-option'>Duplex</button>
+            <button type='button' align='center' class='btn-option'>Apartment</button>
+          </div>
+          <div class="row">
+            <button type='button' align='center' class='btn-option'>Condo</button>
+            <button type='button' align='center' class='btn-option'>Townhouse</button>
+            <button type='button' align='center' class='btn-option btn-all'>All</button>
+          </div>
+          <button type='button' align='center' class='btn-continue'>Continue</button>
         </div>
-        <div class="row">
-          <button type='button' align='center' class='btn-option'>Condo</button>
-          <button type='button' align='center' class='btn-option'>Townhouse</button>
-          <button type='button' align='center' class='btn-option btn-all'>All</button>
-        </div>
-        <button type='button' align='center' class='btn-continue'>Continue</button>
       </div>
       <!--End Home Types-->
 
       <!--Parking Needs-->
       <div class="question-container" id="parking-needs-container">
-        <span class='page-header-subtitle'>Parking Needs: </span>
-        <textarea id="parking-needs-textarea" cols='50' rows='5'></textarea><br>
-        <button type='button' align='center' class='btn-continue'>Continue</button>
+        <div id="parking-needs-error-container">
+          <span class='page-header-subtitle'>Parking Needs: </span>
+          <textarea id="parking-needs-textarea" cols='50' rows='5'></textarea><br>
+          <button type='button' align='center' class='btn-continue'>Continue</button>
+        </div>
       </div>
       <!--End Parking Needs-->
 
       <!--Comments-->
       <div class="question-container" id="comments-container">
-        <span class='page-header-subtitle'>Comments and Questions: </span>
-        <textarea id="comments-textarea" cols='50' rows='10'></textarea><br>
-        <button type='button' align='center' class='btn-continue'>Continue</button>
+        <div id="comments-error-container">
+          <span class='page-header-subtitle'>Comments and Questions: </span>
+          <textarea id="comments-textarea" cols='50' rows='10'></textarea><br>
+          <button type='button' align='center' class='btn-continue'>Continue</button>
+        </div>
       </div>
       <!--End Comments-->
 
       <!--Contact Info-->
       <div align="center" class="question-container form-container" id="contact-info-container">
-        <span class='page-header-subtitle'>What information should we contact you with?<p class="form-required">*</p></span>
-        <form id="contact-info-form">
-          <div class='row'>
-            <div class='col-md-6'>
-              <input type='text' align='center' class='form-control' name='fname' id='fname-input' placeholder='First Name'>
+        <div id="contact-info-error-container">
+          <span class='page-header-subtitle'>What information should we contact you with?<p class="form-required">*</p></span>
+          <form id="contact-info-form">
+            <div class='row'>
+              <div class='col-md-6'>
+                <input type='text' align='center' class='form-control' name='fname' id='fname-input' placeholder='First Name'>
+              </div>
+              <div class='col-md-6'>
+                <input type='text' align='center' class='form-control' name='lname' id='lname-input' placeholder='Last Name'>
+              </div>
             </div>
-            <div class='col-md-6'>
-              <input type='text' align='center' class='form-control' name='lname' id='lname-input' placeholder='Last Name'>
+            <div class='row'>
+              <div class='col-md-6'>
+                <input type='phone' align='center' class='form-control' name='phone' id='phone-input' placeholder='Phone #'>
+              </div>
+              <div class='col-md-6'>
+                <input type='email' align='center' class='form-control' name='email' id='email-input' placeholder='Email'>
+              </div>
             </div>
-          </div>
-          <div class='row'>
-            <div class='col-md-6'>
-              <input type='phone' align='center' class='form-control' name='phone' id='phone-input' placeholder='Phone #'>
-            </div>
-            <div class='col-md-6'>
-              <input type='email' align='center' class='form-control' name='email' id='email-input' placeholder='Email'>
-            </div>
-          </div>
-          <br><button type='submit' align='center' id='contact-info-btn-continue' class='btn-continue' >Continue</button>
-
-        </form>
+            <br><button type='submit' align='center' id='contact-info-btn-continue' class='btn-continue' >Continue</button>
+          </form>
+        </div>
       </div>
       <!--End Contact Info-->
 
       <!--Budget-->
       <div class="question-container form-container" id="budget-container">
-        <span class="page-header-subtitle">What's your housing budget?<p class="form-required">*</p></span>
-        <form id="budget-form">
-          <div class="row">
-            <div class="col-md-6">
-              <input placeholder="$ Min Price"  type='number' step="0.01" align='center' id="min-price-input" class='form-control'>
+        <div id="budget-error-container">
+          <span class="page-header-subtitle">What's your housing budget?<p class="form-required">*</p></span>
+          <form id="budget-form">
+            <div class="row">
+              <div class="col-md-6">
+                <input placeholder="$ Min Price"  type='number' step="0.01" align='center' id="min-price-input" class='form-control'>
+              </div>
+              <div class="col-md-6">
+                <input placeholder="$ Max Price" type='number' step="0.01" align='center' id="max-price-input" class='form-control'>
+              </div>
             </div>
-            <div class="col-md-6">
-              <input placeholder="$ Max Price" type='number' step="0.01" align='center' id="max-price-input" class='form-control'>
-            </div>
+            <br><button type='submit' align='center' id="btn-budget-submit" class='btn-continue'>Submit</button>
           </div>
-          <br><button type='submit' align='center' id="btn-budget-submit" class='btn-continue'>Submit</button>
         </div>
       </form>
       <!--End Budget-->
